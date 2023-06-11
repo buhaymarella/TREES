@@ -45,12 +45,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         </div>
         <hr>
         <!-- GAPILIIAN NILA KUNG ANONG PERMIT TRIP NILA KUNIN -->
-    <form action="#" method="post" class="row g-3 p-5 pt-0">
+    <form action="reg_ptpr_process.php" method="post" class="row g-3 p-5 pt-0">
         <p class="head-text">Purpose:</p>
             <div class="col-md-6">
                 <select name="form-select" id="form-select" class="form-select" onclick="navigateToPage();">
                     <option value="" disabled>Choose One</option>
-                    <option value="chainsaw_reg.php">Chainsaw Registration</option>
+                    <option value="reg_chainsaw.php">Chainsaw Registration</option>
                     <option value="reg_forest.php">Forestry Registration</option>
                     <option value="reg_ptpr.php" selected>Registration for PTPR</option>
                     <option value="chain_renew.php">Chainsaw Certification Renewal</option>
@@ -58,6 +58,9 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             </div>
         <hr>
         <p class="head-text">Personal Details:</p>
+        <div class="col-md-6">
+            <input type="text" placeholder="First Name" required id="fName" name="fName" class="form-control">
+        </div>
         <div class="col-md-6">
             <input type="text" placeholder="First Name" required id="fName" name="fName" class="form-control">
         </div>
@@ -79,25 +82,19 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         <div class="col-md-6">
             <input type="textfield" placeholder="City/Province" required id="cprov" name="cprov" class="form-control">
         </div>
-        <div class="col-md-6">
-            <input type="email" placeholder="Email"  id="ptpr_email" name="ptpr_email" class="form-control">
-        </div>
         <hr>
         <p class="head-text">Plantation Location Details</p>
         <div class="col-md-6">
-            <input type="text" placeholder="Baranggay" required id="brgy" name="brgy" class="form-control mb-1">
-            <input type="text" placeholder="Municipality" required id="mncpl" name="mncpl" class="form-control mb-1">
-            <input type="textfield" placeholder="City/Province" required id="purpose" name="purpose" class="form-control">
+            <input type="text" placeholder="Baranggay" required id="brgy_loc" name="brgy_loc" class="form-control mb-1">
+            <input type="text" placeholder="Municipality" required id="mncpl_loc" name="mncpl_loc" class="form-control mb-1">
+            <input type="text" placeholder="City/Province" required id="prov_loc" name="prov_loc" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="OCT/TCT No./Tax Dec No." required id="taxDec" name="taxDec" class="form-control mb-1">
+            <input type="text" placeholder="OCT/TCT No./Tax Dec No." required id="taxDecNum" name="taxDecNum" class="form-control mb-1">
             <input type="text" placeholder="Total Lot Area" required id="totArea" name="totArea" class="form-control mb-1">
             <input type="text" placeholder="Total Lot Area Devoted to Plantation" required id="totAreaPlant" name="totAreaPlant" class="form-control">
         </div>
         <p class="h5">Plant Details:</p>
-        <div class="col-md-6">
-            <input type="text" placeholder="Kind" required id="kind" name="kind" class="form-control">
-        </div>
         <div class="col-md-6">
             <input type="text" placeholder="Species" required id="species" name="species" class="form-control">
         </div>

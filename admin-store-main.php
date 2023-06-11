@@ -9,41 +9,103 @@ if (!$conn) {
     die("Connection failed." . mysqli_connect_error());
 }
 
+// Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $chainName = $_POST['chain-store'];
     $ownerName = $_POST['own-name'];
     $storeAddress = $_POST['store-address'];
     $contactNumber = $_POST['store-num'];
     $emailAddress = $_POST['store-email'];
+    $bussPermit = $_FILES['bussPermit'];
+    $storeMPermit = $_FILES['storeMPermit'];
 
-    // Upload file
-    $targetDirectory = "uploads/";
-    $targetBusinessPermit = $targetDirectory . basename($_FILES["store-permit"]["name"]);
-    $targetMayorPermit = $targetDirectory . basename($_FILES["mayor-store-permit"]["name"]);
-
-    move_uploaded_file($_FILES["store-permit"]["tmp_name"], $targetBusinessPermit);
-    move_uploaded_file($_FILES["mayor-store-permit"]["tmp_name"], $targetMayorPermit);
-
-    // Prepare and bind the statement
-    $stmt = $conn->prepare("INSERT INTO stores (chain_name, owner_name, address, contact_number, email, business_permit, mayor_permit) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $chainName, $ownerName, $storeAddress, $contactNumber, $emailAddress, $targetBusinessPermit, $targetMayorPermit);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-        // Success
-        echo "Store information has been successfully submitted.";
+    // Check if both images exist
+    if ($bussPermit['error'] === 4 || $storeMPermit['error'] === 4) {
+        echo "<script>alert('Image(s) do not exist!');</script>";
     } else {
-        // Error
-        echo "Error: " . $stmt->error;
+        // Process business permit image
+        $bussPermitFilename = $bussPermit['name'];
+        $bussPermitTmpName = $bussPermit['tmp_name'];
+        $bussPermitFilesize = $bussPermit['size'];
+
+        $validImageExtensions = ['jpg', 'jpeg'];
+        $bussPermitExtension = strtolower(pathinfo($bussPermitFilename, PATHINFO_EXTENSION));
+
+        if (!in_array($bussPermitExtension, $validImageExtensions)) {
+            echo "<script>alert('Invalid Business Permit Image!');</script>";
+        } elseif ($bussPermitFilesize > 5000000) {
+            echo "<script>alert('The Business Permit image must not exceed 5MB');</script>";
+        } else {
+            $bussPermitNewName = uniqid() . '.' . $bussPermitExtension;
+            move_uploaded_file($bussPermitTmpName, 'img/' . $bussPermitNewName);
+        }
     }
 
-    // Close the statement
-    $stmt->close();
+        // Process mayor's permit image
+        $storeMPermitFilename = $storeMPermit['name'];
+        $storeMPermitTmpName = $storeMPermit['tmp_name'];
+        $storeMPermitFilesize = $storeMPermit['size'];
 
-    // Close the DB connection
-    $conn->close();
-}
+        $validImageExtensions = ['jpg', 'jpeg'];
+        $storeMPermitExtension = strtolower(pathinfo($storeMPermitFilename, PATHINFO_EXTENSION));
+
+        if (!in_array($storeMPermitExtension, $validImageExtensions)) {
+            echo "<script>alert('Invalid Mayor\'s Permit Image!');</script>";
+        } elseif ($storeMPermitFilesize > 5000000) {
+            echo "<script>alert('The Mayor\'s Permit image must not exceed 5MB');</script>";
+        } else {
+            $storeMPermitNewName = uniqid() . '.' . $storeMPermitExtension;
+            move_uploaded_file($storeMPermitTmpName, 'img/' . $storeMPermitNewName);
+        }
+
+
+        // Process mayor's permit image
+        $storeMPermitFilename = $storeMPermit['name'];
+        $storeMPermitTmpName = $storeMPermit['tmp_name'];
+        $storeMPermitFilesize = $storeMPermit['size'];
+
+        $validImageExtensions = ['jpg', 'jpeg'];
+        $storeMPermitExtension = strtolower(pathinfo($storeMPermitFilename, PATHINFO_EXTENSION));
+
+        if (!in_array($storeMPermitExtension, $validImageExtensions)) {
+            echo "<script>alert('Invalid Mayor\'s Permit Image!');</script>";
+        } elseif ($storeMPermitFilesize > 5000000) {
+            echo "<script>alert('The Mayor\'s Permit image must not exceed 5MB');</script>";
+        } else {
+            $storeMPermitNewName = uniqid() . '.' . $storeMPermitExtension;
+            move_uploaded_file($storeMPermitTmpName, 'img/' . $storeMPermitNewName);
+        }
+
+        // Prepare and bind the statement
+        $stmt = $conn->prepare("INSERT INTO chainsaw_store (storeName, storeOwner, storeAddress, storeNum, storeEmail, bussPermit, storeMPermit) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+
+        if ($stmt === false) {
+            // Error in preparing the statement
+            echo "Error: " . $conn->error;
+            exit;
+        }
+
+        $stmt->bind_param("sssssss", $chainName, $ownerName, $storeAddress, $contactNumber, $emailAddress, $bussPermitNewName, $storeMPermitNewName);
+
+        // Execute the prepared statement
+        if ($stmt->execute()) {
+            // Data inserted successfully
+            echo "<script>alert('Data inserted successfully');</script>";
+        } else {
+            // Error in data insertion
+            echo "<script>alert('Error in data insertion');</script>";
+        }
+        
+        // Close the prepared statement
+        $stmt->close();
+        
+        // Close the database connection
+        $conn->close();
+        
+    }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -86,37 +148,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     border-radius: 0;
                     margin-bottom: -1px;
                 }
+                a{
+                text-decoration: none;
+                color: var(--primary-text);
+                }
+                a:hover{
+                    color: var(--primary-color);
+                }
                 #logout{
                 border:none;
                 text-align: center;
                 width: 100%;
                 color: var(--secondary-text);
                 padding: 1rem;
-            }
-            #logout:hover{
-                
-                color: var(--primary-color);
-                background-color: transparent;
-                border: 1px solid var(--primary-color);
-            }
-            footer{
-                position: sticky;
-                top: 100%;
-            }
+                }
+                #logout:hover{
+
+                    color: var(--primary-color);
+                    background-color: transparent;
+                    border: 1px solid var(--primary-color);
+                }
+                footer{
+                    position: sticky;
+                    top: 100%;
+                }
             </style>
 
             <div class="col-sm-3 col-md-6 col-lg-4 col-xl-2">
                 <p class="h2 mx-2 mt-5">Menu</p>
                 <hr>
-                <a class="nav-link" href="user_maintenance.php">User Maintenance</a>
+                <a href="user_maintenance.php">User Maintenance</a>
                 <hr>
-                <a class="nav-link" href="admin-store-main.php">Chainsaw Store Maintenance</a>
+                <a href="admin-store-main.php" style="color: var(--primary-color);">Chainsaw Store Maintenance</a>
                 <hr>
-                <a class="nav-link" href="#">Permit Maintenance</a>
+                <a href="#">Permit Maintenance</a>
                 <hr>
-                <a class="nav-link " href="app-maintenance.php">Application Maintenance</a>
+                <a  href="app-maintenance.php">Application Maintenance</a>
                 <hr>
-                <a class="nav-link " href="#">Generate Reports</a>
+                <a  href="dashboard.php">Generate Reports</a>
                 <hr><br><br>
 
 
@@ -168,8 +237,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </thead>
                             <tbody>
                             <?php
+                                include 'db_connect.php';
+
+                                // Connect to the DB
+                                $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+                                
+                                // Check the connection
+                                if (!$conn) {
+                                    die("Connection failed." . mysqli_connect_error());
+                                }
                                 // Query to check if the specified table has data
-                                $query = "SELECT COUNT(*) FROM chainsaw_store";
+                                $query = "SELECT * FROM chainsaw_store ORDER BY `store-regDate` DESC";
                                 $result = mysqli_query($conn, $query);
 
                                 // Check for errors in query execution
@@ -185,29 +263,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $query = "SELECT * FROM chainsaw_store";
                                     $result = mysqli_query($conn, $query);
                                 
-                                    while ($row = mysqli_fetch_array($result)) {
-                                        $imageData = $row['bussPermit'];
-                                        $imageData = $row['storeMPermit'];
-                                        $imageSrc = 'data:image/jpeg;base64,' . base64_encode($imageData);
+                                    // Fetch the rows from the result set
+                                    while ($row = mysqli_fetch_assoc($result)) {
                                         echo '<tr>
-                                                <td>' . $row["storeName"] . '</td>
-                                                <td>' . $row["storeOwner"] . '</td>
-                                                <td>' . $row["storeAddress"] . '</td>
-                                                <td>' . $row["storeNum"] . '</td>
-                                                <td>' . $row["storeEmail"] . '</td>
-                                                <td><img src="path/to/placeholder-image.jpg"></td>
-                                                <td><img src="path/to/placeholder-image.jpg"></td>
-                                                <td colspan="2" class="text-center">
-                                                    <button class="btn btn-success col" id="btn-edit">Edit</button>
-                                                    <button class="btn btn-danger col" id="btn-del">Delete</button>
-                                                </td>
-                                            </tr>';
+                                            <td>' . $row["storeName"] . '</td>
+                                            <td>' . $row["storeOwner"] . '</td>
+                                            <td>' . $row["storeAddress"] . '</td>
+                                            <td>' . $row["storeNum"] . '</td>
+                                            <td>' . $row["storeEmail"] . '</td>
+                                            <td><img src="data:image/jpeg;base64,' . base64_encode($row["bussPermit"]) . '" width="100"></td>
+                                            <td><img src="data:image/jpeg;base64,' . base64_encode($row["storeMPermit"]) . '" width="100"></td>
+                                            <td colspan="2" class="text-center">
+                                                <button class="btn btn-success col" id="btn-edit">Edit</button>
+                                                <button class="btn btn-danger col" id="btn-del">Delete</button>
+                                            </td>
+                                        </tr>';
                                     }
+
                                 }
+                                mysqli_free_result($result);
+
+                                // Close the connection
+                                mysqli_close($conn);
                             ?>
                             </tbody>
                         </table>
-                        <form action="" method="post" class="d-flex justify-content-center align-items-center row mt-3 p-5  pt-0 bg-white">
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="post" class="d-flex justify-content-center align-items-center row mt-3 p-5  pt-0 bg-white">
                             <p class="h5 text-center mt-5">Add Chainsaw Store</p>
                             <p class="h5 text-start mt-2">Store's Information</p>
                             <hr>
@@ -227,10 +308,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input type="email" placeholder="Store's Email Address" class="form-control" name="store-email">
                             </div>
                             <div class="mb-3">
-                                <input type="file" class="form-control" name="store-permit">
+                                <input type="file" class="form-control" name="bussPermit" id="bussPermit" accept=".jpg, .jpeg, .png">
                             </div>
                             <div class="mb-3">
-                                <input type="file" class="form-control" name="mayor-store-permit">
+                                <input type="file" class="form-control" name="storeMPermit" id="storeMPermit" accept=".jpg, .jpeg, .png">
                             </div>
                             <div class="mb-3 d-flex justify-content-center align-items-center">
                                 <button type="submit" class="btn btn-primary">Submit</button>

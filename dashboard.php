@@ -144,14 +144,6 @@ mysqli_close($conn);
                         <p class="display-6 m-2">Dashboard</p>
                         <p class="h5 mx-2 text-secondary">Registered Users</p>
                     </div>
-                    <div class="col mb-0 mt-4 m-5">
-                        <select name="mode" id="mode" class="form-select flex-end" onclick="navigateToPage();">
-                            <option value="" disabled selected>Choose One</option>
-                            <option value="forestry.html">Forestry Registration</option>
-                            <option value="permit_two.html" >Certificate of Verification</option>
-                            <option value="permit_two.html">Plantation</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="card__container pb-5">
                     <div>
@@ -171,7 +163,7 @@ mysqli_close($conn);
                     <div>
                     <?php $num= 120; ?>
                         <p class="display-5 text-white mb-0 m-3 mt-4" style="font-weight: 500;"><?php echo $num;?></p>
-                        <p class="text-white mt-2 m-3 mb-0" style="font-size: 16px; font-weight: 500;">Registered Chainsaws</p>
+                        <p class="text-white mt-2 m-3 mb-0" style="font-size: 16px; font-weight: 500;">Total Applications</p>
                         <p class="text-white mt-0 m-3" style="font-size: 12px;font-weight: 500;">some sub-text</p>
                         <i class="fa-solid fa-user fa-2xl" style="color: #ffffff; transform: translateY(-6.5rem) translateX(10rem);"></i>
                     </div>
@@ -185,8 +177,8 @@ mysqli_close($conn);
                 </div>
 
             
-            <section class="graph__container row container mx-2 px-5">
-                <div class="big__container col-sm-7">
+            <section class="graph__container row container-fluid mx-2 px-5">
+                <div class=" container">
                     <header class="container__head row">
                         <div class="col-sm-9">
                             <p class="col text-white pt-2 h4">Registered Users</p>
@@ -200,16 +192,6 @@ mysqli_close($conn);
                     <h1>
                         
                     </h1>
-                </div>
-                <div class="small__container col-sm-4 mx-2">
-                    <header class="container__head row">
-                        <div class="col">
-                            <p class="col text-white">Registered Users</p>
-                        </div>
-                        <div class="col">
-                            <p class="col">Registered Users</p>
-                        </div>
-                    </header>
                 </div>
             </section>
             </div>

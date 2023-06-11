@@ -51,7 +51,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             <div class="col-md-6">
                 <select name="form-select" id="form-select" class="form-select" onclick="navigateToPage();">
                     <option value="" disabled>Choose One</option>
-                    <option value="chainsaw_reg.php" >Chainsaw Registration</option>
+                    <option value="reg_chainsaw.php" >Chainsaw Registration</option>
                     <option value="reg_forest.php">Forestry Registration</option>
                     <option value="reg_ptpr.php">Registration for PTPR</option>
                     <option value="chain_renew.php"selected>Chainsaw Certification Renewal</option>

@@ -1,11 +1,3 @@
-<?php
-session_start();
-//bring back to login if there is no session
-if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
-    header('Location: login.php');
-    exit;
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,14 +19,9 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             <li class="nav-item">
                 <a href="profilepage.php" class="nav__link text-white text-decoration-none">Home</a>
             </li>
-            <?php
-                if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
-                    // User is logged in, show the profile link
-                    echo '<li class="nav-item">';
-                    echo '<a href="profilepage.php" class="nav__link text-white text-decoration-none">Profile</a>';
-                    echo '</li>';
-                }
-            ?>
+                <li class="nav-item">
+                    <a href="profilepage.php" class="nav__link text-white text-decoration-none">Profile</a>
+                </li>
             <li class="nav-item">
                 <a href="login.php" class="nav__link text-white text-decoration-none">Login</a>
             </li>
@@ -51,16 +38,6 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         <hr>
         <!-- GAPILIIAN NILA KUNG ANONG PERMIT TRIP NILA KUNIN -->
     <form action="reg_chainsaw_process.php" method="post" class="row g-3 p-5 pt-0">
-        <p class="head-text">Purpose:</p>
-            <div class="col-md-6">
-                <select name="form-select" id="form-select" class="form-select" onclick="navigateToPage();">
-                    <option value="" disabled>Choose One</option>
-                    <option value="reg_chainsaw.php" selected>Chainsaw Registration</option>
-                    <option value="reg_forest.php">Forestry Registration</option>
-                    <option value="reg_ptpr.php">Registration for PTPR</option>
-                    <option value="chain_renew.php">Chainsaw Certification Renewal</option>
-                </select>
-            </div>
         <hr>
         <p class="head-text">Owner's Details:</p>
         <div class="col-md-6">
@@ -94,28 +71,13 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             <input type="file" placeholder="Chainsaw Verification"  id="cVerification" name="cVerification" class="form-control">
         </div>
         <div class="col-md-6">
-            <?php
-                // Connect to the database
-                include 'db_connect.php';
-                $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
-                // Check the connection
-                if (!$conn) {
-                    die("Connection failed." . mysqli_connect_error());
-                }
-            
-                // Query to fetch the options from the table
-                $query = "SELECT storeName FROM chainsaw_store ORDER BY 'store-id' DESC";
-                $result = mysqli_query($conn, $query);
-                //$row = mysqli_fetch_array($result, MYSQLI_NUM);
-
-                echo "
-                <select name='cStore' id='cStore' class='form-select'>
-                    <option value='' disabled selected>Chainsaw Store</option>";
-                    while($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
-                        echo " <option> $row[0]</option>";
-                    }
-                echo "</select>";
-            ?>
+                <select name="cStore" id="cStore" class="form-select">
+                    <option value="" disabled selected>Chainsaw Store</option>
+                    <option value="reg_chainsaw.php">Chainsaw Registration</option>
+                    <option value="reg_forest.php">Forestry Registration</option>
+                    <option value="reg_ptpr.php">Registration for PTPR</option>
+                    <option value="chain_renew.php">Chainsaw Certification Renewal</option>
+                </select>
         </div>
         <div class="col-md-6">
             <input type="text" placeholder="Chainsaw Brand Name" required id="cBrand" name="cBrand" class="form-control">
@@ -165,7 +127,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
                 </div>
             </div>
             <hr>
-            <div class=" row text-white d-flex justify-content-center mt-3">
+            <!-- <div class=" row text-white d-flex justify-content-center mt-3">
                 <form action="reg_chainsaw_process.php" method="post"></form>m
                     <button type="submit" class="btn btn-primary col-sm-5 mx-2 btn__sub text-white mt-1" id="btn-sub" style="background-color:#00796B ">
                         SUBMIT
@@ -173,7 +135,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
                 <button type="button" class="btn btn-outline-success col-sm-5 btn__draft mt-1" id="btn-draft">
                     SAVE AS DRAFT
                 </button>
-            </div>
+            </div> -->
     </form>
 
 

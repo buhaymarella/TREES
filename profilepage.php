@@ -99,7 +99,7 @@ mysqli_close($conn);
     <nav class="container sec__nav-container p-1" >
         <div class="row mt-3 gap-5 mx-1">
             <div class="col-1 mb-3">
-                <a href="draft_pg.html" class="nav-link text-white mx-2">
+                <a href="draft.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/drafts.png" alt="draft" style="width: fit-content;">
                     <span>Draft</span>
@@ -115,7 +115,7 @@ mysqli_close($conn);
                 </a>
                 </div>
                 <div class="col-1 mb-3">
-                <a href="#" class="nav-link text-white mx-2">
+                <a href="profilepage.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/profile.png" alt="profile" style="width: 2.5rem;opacity: 70%;">
                     <span>Profile</span>
@@ -123,7 +123,7 @@ mysqli_close($conn);
                 </a>
                 </div>
                 <div class="col-1 mb-3">
-                <a href="permit_pg.html" class="nav-link text-white mx-2">
+                <a href="permit.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/permit.png" alt="permit" style="width: 2.5rem;" >
                     <span>Permit</span>
