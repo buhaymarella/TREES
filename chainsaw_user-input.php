@@ -41,7 +41,7 @@
         <hr>
         <p class="head-text">Owner's Details:</p>
         <div class="col-md-6">
-            <input type="text" placeholder="First Name" required id="fName" name="fName" class="form-control">
+            <input type="text" placeholder="First Name" required id="fName" name="f_Name" class="form-control">
         </div>
         <div class="col-md-6">
             <input type="text" placeholder="Last Name" required id="lName" name="lName" class="form-control">

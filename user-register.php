@@ -47,8 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $conn->prepare($sql);
         $stmt->execute([$fname, $lname, $mname, $suffix, $brgy, $municipality, $cprov, $pID, $formattedDate, $age, $occup, $telNum, $email, $uName, $encrypted_password, $type_User, $status]);
         
-        echo "New Record created Successfully";
-        header("Location: ". $_SERVER['PHP_SELF']);
+        echo "<script>alert('New Record created Successfully');";
         
     } catch(PDOException $e){
         echo $sql . "<br>" . $e->getMessage();

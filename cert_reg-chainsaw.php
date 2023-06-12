@@ -1,3 +1,73 @@
+<?php
+session_start();
+//for connection
+include 'db_connect.php';
+//bring back to login if there is no session
+if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+// Connect to the DB
+$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+
+// Check the connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Get the user's ID from your authentication system
+$uName = $_SESSION['uName'];
+
+//get ID
+$getID = "SELECT * FROM users WHERE uName = '$uName'";
+$res = mysqli_query($conn, $getID);
+if (mysqli_num_rows($res) > 0) {
+    foreach ($res as $row) {
+        $last_id = $row['id'];
+    }
+}
+
+$query = "SELECT c.*, u.uName
+        FROM chainsaw_registration c
+        JOIN users u ON c.chainsaw_id_fk = u.id
+        ORDER BY c.chain_ID";
+
+$result = mysqli_query($conn, $query);
+
+// Check if the query executed successfully
+if (!$result) {
+    die("Query execution failed: " . mysqli_error($conn));
+}
+
+$rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+foreach ($rows as $row) {
+    //retrieve values
+    $fName = $row['fName'];
+    $lName = $row['lName'];
+    $mName = $row['mName'];
+    $suff = $row['suff'];
+    $brgy = $row['brgy'];
+    $mncpl = $row['mncpl'];
+    $city = $row['city'];
+    $pID = $row['pId'];
+    $storeName = $row['cStore'];
+    $cBrand = $row['cBrand'];
+    $cModel = $row['cModel'];
+    $sNum = $row['sNum'];
+    $dAcq = $row['dAcq'];
+    $eDisplace = $row['eDisplace'];
+    $lBlade = $row['lBlade'];
+    $cOrig = $row['cOrig'];
+    $cPrice = $row['cPrice'];
+
+    // Process each row here...
+}
+
+$conn->close();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +150,7 @@
     <nav class="container sec__nav-container p-1" >
         <div class="row mt-3 gap-5 mx-1">
             <div class="col-1 mb-3">
-                <a href="draft_pg.html" class="nav-link text-white mx-2">
+                <a href="draft.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/drafts.png" alt="draft" style="width: fit-content;">
                     <span>Draft</span>
@@ -96,7 +166,7 @@
                 </a>
                 </div>
                 <div class="col-1 mb-3">
-                <a href="#" class="nav-link text-white mx-2">
+                <a href="profilepage.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/profile.png" alt="profile" style="width: 2.5rem;opacity: 70%;">
                     <span>Profile</span>
@@ -104,7 +174,7 @@
                 </a>
                 </div>
                 <div class="col-1 mb-3">
-                <a href="permit_pg.html" class="nav-link text-white mx-2">
+                <a href="permit.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/permit.png" alt="permit" style="width: 2.5rem;" >
                     <span>Permit</span>
@@ -141,10 +211,10 @@
             <p style="text-align: justify;" class="mb-0 mt-0 p-5 pt-3 pb-3 sub-text">
                 After having complied with the provisions of DENR Administrative Order No. 2003 - 04, Series of 2003 otherwise known as “The Implementing Rules and Regulations of the Chainsaw Act of 2002 (RA No. 9175)” entitled “AN ACT REGULATING THE OWNERSHIP, POSSESION, SALE, IMPORTATION AND USE OF CHAINSAWS PENALIZING VIOLATIONS THEREOF AND FOR OTHER PURPOSES” this Certificate of Registration to own, possess and / or use a chainsaw is hereby issued to:
             </p>
-            <p class="name mb-0 pt-0 pb-0 mt-0">NAME OF OWNER</p>
+            <p class="name mb-0 pt-0 pb-0 mt-0"><?php echo $fName . " " . $lName . " " . $mName . " "; ?></p>
             <p class=" mt-0 pt-0">(Name of Owner)</p>
-            <p class="pb-0 mb-0 address">Brgy. Ogbac, Boac, Marinduque</p>
-            <p class=" mt-0 pt-0">(Name of Owner)</p>
+            <p class="pb-0 mb-0 address">Brgy. <?php echo $brgy . " " . $mncpl . " " . $city . " "; ?></p>
+            <p class=" mt-0 pt-0">(Address)</p>
             <p class="mb-0 pb-0 text-start mx-5">Bearing the following information and description</p>
             <p class="mt-0 pt-0 mx-5 text-start"><span>Use of the Chainsaw:</span> For Cutting/ Slicing of Planted trees cutting permits and coconut within Private Land.</p>
         </div>
@@ -152,35 +222,35 @@
             <tbody>
                 <tr>
                     <td>Brand</td>
-                    <td>:             STIHL</td>
+                    <td>:             <?php echo $cBrand;?></td>
                 </tr>
                 <tr>
                     <td>Model</td>
-                    <td>:             MS 070</td>
+                    <td>:             <?php echo $cModel;?></</td>
                 </tr>
                 <tr>
                     <td>Serial No.</td>
-                    <td>:             S188128299</td>
+                    <td>:             <?php echo $sNum;?></</td>
                 </tr>
                 <tr>
                     <td>Date of Acquisition</td>
-                    <td>:             11/28/2020</td>
+                    <td>:             <?php echo $dAcq;?></</td>
                 </tr>
                 <tr>
                     <td>Power Output (kW/bhp)</td>
-                    <td>:             1.0 Hp</td>
+                    <td>:             <?php echo $eDisplace;?></</td>
                 </tr>
                 <tr>
                     <td>Maximum Length if the Guidebar</td>
-                    <td>:             36 inches</td>
+                    <td>:             <?php echo $lBlade;?></</td>
                 </tr>
                 <tr>
                     <td>Country of Origin</td>
-                    <td>:             Made in Germany</td>
+                    <td>:             <?php echo $cOrig;?></</td>
                 </tr>
                 <tr>
                     <td>Purchase Price</td>
-                    <td>:             PHP 60,000.00</td>
+                    <td>:             PHP <?php echo $cPrice;?></</td>
                 </tr>
                 <tr>
                     <td>Others</td>

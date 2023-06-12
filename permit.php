@@ -1,3 +1,70 @@
+<?php
+    // Assuming you have already established a database connection
+    session_start();
+    include 'db_connect.php';
+    //bring back to login if there is no session
+    if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
+        header('Location: login.php');
+        exit;
+    }
+    
+    // Connect to the DB
+    $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+    
+    // Check the connection
+    if (!$conn) {
+        die("Connection failed." . mysqli_connect_error());
+    }
+    // Get the user's ID from your authentication system
+    $uName = $_SESSION['uName'];
+
+    //get ID
+    $getID = "select * from users where uName = '$uName'";
+    $res = mysqli_query($conn, $getID);
+    if(mysqli_num_rows($res) > 0){
+
+        foreach($res as $row){
+            $last_id = $row['id'];
+        }
+        
+    } // Modify this according to your authentication setup
+    
+    // Retrieve data from the tables based on the foreign key relationship
+    $query = "SELECT chainsaw_registration.permit_type AS chainsaw_permit_type,
+                    ptpr_registration.permit_type AS ptpr_permit_type
+                    FROM users
+                    LEFT JOIN chainsaw_registration ON chainsaw_registration.chainsaw_id_fk = users.id
+                    LEFT JOIN ptpr_registration ON ptpr_registration.ptpr_id = users.id
+                    WHERE users.id = '$last_id'";
+    
+    $result = mysqli_query($conn, $query);
+    
+    // Check if the query executed successfully
+    if ($result) {
+        // Fetch the row as an associative array
+        $row = mysqli_fetch_assoc($result);
+    
+        // Check if both permit types exist
+        if ($row['chainsaw_permit_type'] !== null && $row['ptpr_permit_type'] !== null) {
+            $permitType = "Both chainsaw_registration and ptpr_registration";
+        } elseif ($row['chainsaw_permit_type'] !== null) {
+            $permitType = "chainsaw_registration";
+        } elseif ($row['ptpr_permit_type'] !== null) {
+            $permitType = "ptpr_registration";
+        } else {
+            $permitType = "No permit type";
+        }
+    
+        // Free the result set
+        mysqli_free_result($result);
+    } else {
+        // Handle any errors that occurred during the query
+        echo "Error: " . mysqli_error($conn);
+    }
+    
+    // Close the database connection
+    mysqli_close($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +116,7 @@
     <nav class="container sec__nav-container p-1" >
         <div class="row mt-3 gap-5 mx-2">
             <div class="col-1 mb-3">
-                <a href="draft_pg.html" class="nav-link text-white mx-2">
+                <a href="draft.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/drafts.png" alt="draft" style="width: fit-content;">
                     <span>Draft</span>
@@ -65,7 +132,7 @@
                 </a>
                 </div>
                 <div class="col-1 mb-3">
-                <a href="#" class="nav-link text-white mx-2">
+                <a href="profilepage.php" class="nav-link text-white mx-2">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/profile.png" alt="profile" style="width: 2.5rem;">
                     <span>Profile</span>
@@ -73,7 +140,7 @@
                 </a>
                 </div>
                 <div class="col-1 mb-3">
-                <a href="permit_pg.html" class="nav-link text-white mx-2" style="opacity: 70%;">
+                <a href="permit.php" class="nav-link text-white mx-2" style="opacity: 70%;">
                     <div class="d-flex flex-column align-items-center">
                     <img src="images/permit.png" alt="permit" style="width: 2.5rem;" >
                     <span>Permit</span>
@@ -103,42 +170,68 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Chainsaw Registration Permit</td>
-                            <td>23/06/23- 10:05</td>
-                            <td class="text-success">APPROVED</td>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-success col" id="btn-edit" >Edit</button>
-                                <button class="btn btn-danger col" id="btn-del">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chainsaw Registration Permit</td>
-                            <td>23/06/23- 10:05</td>
-                            <td class="text-success">APPROVED</td>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-success col" id="btn-edit">Edit</button>
-                                <button class="btn btn-danger col" id="btn-del" >Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chainsaw Registration Permit</td>
-                            <td>23/06/23- 10:05</td>
-                            <td class="text-danger">REJECTED</td>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-success " id="btn-edit" >Edit</button>
-                                <button class="btn btn-danger" id="btn-del" >Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chainsaw Registration Permit</td>
-                            <td>23/06/23- 10:05</td>
-                            <td class="text-success">APPROVED</td>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-success col" id="btn-edit" >Edit</button>
-                                <button class="btn btn-danger col" id="btn-del">Delete</button>
-                            </td>
-                        </tr>
+                    <?php
+                        include 'db_connect.php';
+                        // Connect to the DB
+                        $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+
+                        // Check the connection
+                        if (!$conn) {
+                            die("Connection failed." . mysqli_connect_error());
+                        }
+                        // Query chainsaw_registration table
+                        $chainsawQuery = "SELECT permit_type, permit_date FROM chainsaw_registration WHERE chainsaw_id_fk = $last_id";
+                        $chainsawResult = mysqli_query($conn, $chainsawQuery);
+                        if (!$chainsawResult) {
+                            die("Error retrieving chainsaw registration data: " . mysqli_error($conn));
+                        }
+
+                        while ($chainsawRow = mysqli_fetch_assoc($chainsawResult)) {
+                            $permitType = $chainsawRow['permit_type'];
+                            $dateIssued = $chainsawRow['permit_date'];
+                            ?>
+
+                            <tr>
+                                <td><?php echo $permitType; ?></td>
+                                <td><?php echo $dateIssued; ?></td>
+                                <td class="text">Status</td>
+                                <td class="text-center">
+                                    <button class="btn btn-success" id="btn-edit">Edit</button>
+                                    <form action="cert_reg-chainsaw.php" method="post">
+                                        <button class="btn btn-outline-success">Print</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        
+                        <?php } 
+                        ?>
+                        
+                        <?php
+                        // Query ptpr_registration table
+                        $ptprQuery = "SELECT permit_type, regDate FROM ptpr_registration WHERE ptpr_id = $last_id";
+                        $ptprResult = mysqli_query($conn, $ptprQuery);
+                        if (!$ptprResult) {
+                            die("Error retrieving ptpr registration data: " . mysqli_error($conn));
+                        }
+                        
+                        while ($ptprRow = mysqli_fetch_assoc($ptprResult)) {
+                            $permitType = $ptprRow['permit_type'];
+                            $dateIssued = $ptprRow['regDate'];
+                            ?>
+
+                            <tr>
+                                <td><?php echo $permitType; ?></td>
+                                <td><?php echo $dateIssued; ?></td>
+                                <td class="text">Status</td>
+                                <td class="text-center">
+                                    <button class="btn btn-success" id="btn-edit">Edit</button>
+                                    <form action="cert_priv-treeplantation.php" method="post">
+                                        <button class="btn btn-outline-success">Print</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

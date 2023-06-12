@@ -62,25 +62,23 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             <input type="text" placeholder="First Name" required id="fName" name="fName" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="First Name" required id="fName" name="fName" class="form-control">
-        </div>
-        <div class="col-md-6">
             <input type="text" placeholder="Last Name" required id="lName" name="lName" class="form-control">
         </div>
         <div class="col-md-6">
             <input type="text" placeholder="Middle Name" id="mName" name="mName" class="form-control">
         </div>
-        <div class="col-md-6">
-            <input type="text" placeholder="Municipality" required id="mncpl" name="mncpl" class="form-control">
-        </div>
+        <hr>
         <div class="col-md-6">
             <input type="text" placeholder="Baranggay" required id="brgy" name="brgy" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="number" placeholder="Contact Number" id="conNum" name="conNum" class="form-control">
+            <input type="text" placeholder="Municipality" required id="mncpl" name="mncpl" class="form-control">
         </div>
         <div class="col-md-6">
             <input type="textfield" placeholder="City/Province" required id="cprov" name="cprov" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <input type="number" placeholder="Contact Number" id="conNum" name="conNum" class="form-control">
         </div>
         <hr>
         <p class="head-text">Plantation Location Details</p>
@@ -122,10 +120,10 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         </div>
             <hr>
             <div class=" row text-white d-flex justify-content-center mt-3">
-                <button type="submit" class="btn btn-primary col-sm-5 mx-2 btn__sub text-white mt-1" id="btn-sub" style="background-color:#00796B ">
+                <button type="submit" name="submit" class="btn btn-primary col-sm-5 mx-2 btn__sub text-white mt-1" id="btn-sub" style="background-color:#00796B ">
                     SUBMIT
                 </button>
-                <button type="button" class="btn btn-outline-success col-sm-5 btn__draft mt-1" id="btn-draft">
+                <button type="submit" name="draft" class="btn btn-outline-success col-sm-5 btn__draft mt-1" id="btn-draft">
                     SAVE AS DRAFT
                 </button>
             </div>

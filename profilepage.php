@@ -60,6 +60,18 @@ mysqli_close($conn);
     <title>Permit Page</title>
 </head>
 <body>
+    <style>
+        #view{
+            border: 1px solid #009688;
+            color: #009688;
+            border-radius: 4px;
+            background-color: transparent;
+        }
+        button #view:hover{
+        background-color: #009688;
+        color: #f8f8f8;
+        }
+    </style>
     <header class="header__main-container d-flex flex-column flex-sm-row container-fluid header">
         <!-- header logo -->
         <div class="header__logo-container container d-flex flex-column flex-sm-row p-3 pb-1">
@@ -179,9 +191,9 @@ mysqli_close($conn);
                             </tr>
                         </tbody>
                     </table>
-                        <button class="container-fluid p-2 mt-3 bg-transparent" style="border: 1px solid #009688; color: #009688; border-radius: 4px;">View All</button>
+                        <button class="container-fluid p-2 mt-3" id="view">View All</button>
                         <form action="reg_chainsaw.php" method="post">
-                            <button class="container-fluid p-2 mt-3 text-white" type="submit" style="background-color: #009688; border: none;border-radius: 4px;" >Apply for New Permit</button>
+                            <button class="container-fluid p-2 mt-3 text-white" type="submit" style="background-color: #009688; border: none;border-radius: 4px;" id="permit">Apply for New Permit</button>
                         </form>
                         
                 </div>

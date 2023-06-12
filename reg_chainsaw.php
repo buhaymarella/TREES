@@ -50,7 +50,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         </div>
         <hr>
         <!-- GAPILIIAN NILA KUNG ANONG PERMIT TRIP NILA KUNIN -->
-    <form action="reg_chainsaw_process.php" method="post" class="row g-3 p-5 pt-0">
+    <form  action="reg_chainsaw_process.php"  method="post" class="row g-3 p-5 pt-0">
         <p class="head-text">Purpose:</p>
             <div class="col-md-6">
                 <select name="form-select" id="form-select" class="form-select" onclick="navigateToPage();">
@@ -64,10 +64,10 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         <hr>
         <p class="head-text">Owner's Details:</p>
         <div class="col-md-6">
-            <input type="text" placeholder="First Name" required id="fName" name="fName" class="form-control">
+            <input type="text" placeholder="First Name"  id="fName" name="fName" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Last Name" required id="lName" name="lName" class="form-control">
+            <input type="text" placeholder="Last Name"  id="lName" name="lName" class="form-control">
         </div>
         <div class="col-md-6">
             <input type="text" placeholder="Middle Name" id="mName" name="mName" class="form-control">
@@ -76,16 +76,16 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             <input type="text" placeholder="Suffix" id="suff" name="suff" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Baranggay" required id="brgy" name="brgy" class="form-control">
+            <input type="text" placeholder="Baranggay"  id="brgy" name="brgy" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Municipality" required id="mncpl" name="mncpl" class="form-control">
+            <input type="text" placeholder="Municipality"  id="mncpl" name="mncpl" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="City/Province" required id="city" name="city" class="form-control">
+            <input type="text" placeholder="City/Province"  id="city" name="city" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Postal ID" required id="pId" name="pId" class="form-control">
+            <input type="text" placeholder="Postal ID"  id="pId" name="pId" class="form-control">
         </div>
         <hr>
         <p class="head-text">Chainsaw Complete Details</p>
@@ -118,28 +118,28 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             ?>
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Chainsaw Brand Name" required id="cBrand" name="cBrand" class="form-control">
+            <input type="text" placeholder="Chainsaw Brand Name"  id="cBrand" name="cBrand" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Chainsaw Model" required id="cModel" name="cModel" class="form-control">
+            <input type="text" placeholder="Chainsaw Model"  id="cModel" name="cModel" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Serial Number" required id="sNum" name="sNum" class="form-control">
+            <input type="text" placeholder="Serial Number"  id="sNum" name="sNum" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Date of Acquisition" required id="datepicker" name="dAcq" class="form-control">
+            <input type="text" placeholder="Date of Acquisition"  id="datepicker" name="dAcq" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Engine Displacement" required id="eDisplace" name="eDisplace" class="form-control">
+            <input type="text" placeholder="Engine Displacement"  id="eDisplace" name="eDisplace" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Length of Blade" required id="lBlade" name="lBlade" class="form-control">
+            <input type="text" placeholder="Length of Blade"  id="lBlade" name="lBlade" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="text" placeholder="Country of Origin" required id="cOrig" name="cOrig" class="form-control">
+            <input type="text" placeholder="Country of Origin"  id="cOrig" name="cOrig" class="form-control">
         </div>
         <div class="col-md-6">
-            <input type="number" placeholder="Purchase Price" required id="cPrice" name="cPrice" class="form-control">
+            <input type="number" placeholder="Purchase Price"  id="cPrice" name="cPrice" class="form-control">
         </div>
     <hr>
         <div class="container">
@@ -166,13 +166,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             </div>
             <hr>
             <div class=" row text-white d-flex justify-content-center mt-3">
-                <form action="reg_chainsaw_process.php" method="post"></form>m
-                    <button type="submit" class="btn btn-primary col-sm-5 mx-2 btn__sub text-white mt-1" id="btn-sub" style="background-color:#00796B ">
+                    <button type="submit" name="submit" class="btn btn-primary col-sm-5 mx-2 btn__sub text-white mt-1" id="btn-sub" style="background-color:#00796B ">
                         SUBMIT
                     </button>
-                <button type="button" class="btn btn-outline-success col-sm-5 btn__draft mt-1" id="btn-draft">
-                    SAVE AS DRAFT
-                </button>
+                    <button type="submit" name="draft" class="btn btn-outline-success col-sm-5 btn__draft mt-1" >
+                        SAVE AS DRAFT
+                    </button>
             </div>
     </form>
 
